@@ -37,7 +37,4 @@ ________________________________________________________________________
 - a lot of println!(" ") for terminal aesthetics
 - hangman ascii arts hell yeahhh
 
-[^1]: can`t remember the exact time line anymore. 
-
-
-
+[^1]: can`t remember the exact time line anymore.
