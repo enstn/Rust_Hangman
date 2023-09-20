@@ -4,8 +4,8 @@
 
 ## to be fixed
 
->/ sometimes has error when already guessed char is put in
->/ can not handle uppercase inputs
+- sometimes has error when already guessed char is put in
+- can not handle uppercase inputs
 
 
 ## idea dump for things i might add
