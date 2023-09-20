@@ -1,17 +1,3 @@
-/*
-Version 1.4
-
-TO BE FIXED:
--sometimes has error when already guessed char is put in
--can not handle multiple words / special keys
--can not handle uppercase inputs
-
-TO BE ADDED:
--libraries (momentan werden noch Vektoren benutzt)
--levels (verschiedene libraries mit unterschiedlich schweren Wörtern)
--eigenes random number generator
--option for multiple rounds
-*/
 
 use std::io;
 use rand::Rng;
