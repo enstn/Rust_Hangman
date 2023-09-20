@@ -3,14 +3,14 @@
 
 ________________________________________________________________________
 
-## bugs / to be fixed eventually
+**bugs / to be fixed eventually**
 
 - [ ] sometimes has error when already guessed char is put in
 - [ ] can not handle uppercase inputs
 - [x] ~~user cannot see previous attempts~~
 
 
-## idea dump for things i might add
+**idea dump for things i might add**
 
 - libraries (momentan werden noch Vektoren benutzt)
 - levels (verschiedene libraries mit unterschiedlich schweren Wörtern)
