@@ -7,7 +7,7 @@ ________________________________________________________________________
 
 - [ ] sometimes has error when already guessed char is put in
 - [ ] can not handle uppercase inputs
-- [x] user cannot see previous attempts
+- [x] ~~user cannot see previous attempts~~
 
 
 ## idea dump for things i might add
