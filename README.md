@@ -4,7 +4,6 @@
 
 # to be fixed
 ```
-/ ~~ user cannot see his previous guesses ~~
 / sometimes has error when already guessed char is put in
 / can not handle uppercase inputs
 ```
