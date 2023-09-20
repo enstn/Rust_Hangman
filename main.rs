@@ -146,7 +146,7 @@ fn game(word_to_guess:String) {
                 for _n in 1..20 {
                     println!("");
                 }
-                println!("Correct, the word was {}!", word_to_guess);
+                println!("Correct, the word was [ {} ]!", word_to_guess);
                 break;
             }
         } else {
