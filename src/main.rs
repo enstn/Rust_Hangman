@@ -4,7 +4,7 @@ use rand::Rng;
 
 fn main() {
   
-    for _n in 1..30 {
+    for _n in 0..29 {
         println!("");
     }
     println!("Welcome to Hangman Version 1.4!"); 
@@ -12,7 +12,7 @@ fn main() {
     println!(" ");
     println!("1 = Player Versus Computer");
     println!("2 = Player Versus Player");
-    for _n in 1..20 {
+    for _n in 0..19 {
         println!("");
     }
     
@@ -22,13 +22,13 @@ fn main() {
     _modi_input = _modi_input.trim().to_string();
 
     if (_modi_input == "1") {
-        for _n in 1..50 {
+        for _n in 0..49 {
             println!("");
         }
         println!("You have selected: Player Versus Computer. The game starts now!");
         pvc_mode();
     } else if (_modi_input == "2") {
-        for _n in 1..50 {
+        for _n in 0..49 {
             println!("");
         }
         println!("You have selected: Player Versus Player. The game starts now!");
@@ -38,7 +38,7 @@ fn main() {
     }
 
     println!("Thank you for playing Hangman! Until next time :)");
-    for _n in 1..13 {
+    for _n in 0..13 {
         println!("");
     }
    
@@ -63,18 +63,18 @@ fn pvc_mode() {
 fn pvp_mode() {
 
     println!("Player One, please input the word to be guessed: ");
-    for _n in 1..23 {
+    for _n in 0..22 {
         println!("");
     }
     let mut _pvp_word = String::new();
     io::stdin().read_line(&mut _pvp_word).expect("Failed to read in your word");
     _pvp_word.pop();
 
-    for _n in 1..30 {
+    for _n in 0..29 {
         println!("");
     }
     println!("Player 2 shall start now!");
-    for _n in 1..20 {
+    for _n in 0..19 {
         println!("");
     }
 
@@ -111,7 +111,7 @@ fn game(word_to_guess:String) {
         println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore placement
         println!(" ");
         println!("Please input your guess:");
-        for _n in 1..10 {
+        for _n in 0..9 {
             println!("");
         }
 
@@ -120,7 +120,7 @@ fn game(word_to_guess:String) {
         let guess = guess_input.trim().chars().next().unwrap(); //thank you Stackoverflow; checks for single char input
 
         if word_to_guess.contains(guess) {
-            for _n in 1..20 {
+            for _n in 0..19 {
                 println!("");
             }
             for (i, c) in word_to_guess.chars().enumerate() { //Stackoverflow at it again
@@ -129,7 +129,7 @@ fn game(word_to_guess:String) {
                 }
             }
             if (!thing_on_display.contains(&'_')) { 
-                for _n in 1..20 {
+                for _n in 0..19 {
                     println!("");
                 }
                 println!("Correct, the word was [ {} ]!", word_to_guess);
@@ -138,7 +138,7 @@ fn game(word_to_guess:String) {
         } else {
             player_guessed_chars.push(guess);
             player_guessed_chars.push(' ');
-            for _n in 1..20 {
+            for _n in 0..19 {
                 println!("");
             }
             attempts -= 1;
