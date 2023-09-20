@@ -1,12 +1,12 @@
 /*
+Version 1.4
+
 TO BE FIXED:
 -sometimes has error when already guessed char is put in
 -can not handle multiple words / special keys
 -can not handle uppercase inputs 
 
 TO BE ADDED:
--string where already guessed characters are contained
--ascii hangman animation!
 -libraries (momentan werden noch Vektoren benutzt)
 -levels (verschiedene libraries mit unterschiedlich schweren Wörtern)
 -eigenes random number generator
@@ -21,7 +21,7 @@ fn main() {
     for _n in 1..30 {
         println!("");
     }
-    println!("Welcome to Hangman Version 1.3!"); 
+    println!("Welcome to Hangman Version 1.4!"); 
     println!("Please select a modi: ");
     println!(" ");
     println!("1 = Player Versus Computer");
@@ -52,7 +52,7 @@ fn main() {
     }
 
     println!("Thank you for playing Hangman! Until next time :)");
-    for _n in 1..23 {
+    for _n in 1..13 {
         println!("");
     }
    
@@ -64,7 +64,7 @@ fn pvc_mode() {
     // Game library (to be somehow replaced by incorporating library.txt)
     let library = vec!["Jazz", "Why", "Are", "You", "Gay"];
 
-    // Random number generator (to be replaced by a manual linear congruential generator, because why not)
+    // Random number generator (to be replaced by a manual linear congruential generator in the future, because why not)
     let random_number = rand::thread_rng().gen_range(0, library.len());
 
     // Number-to-guess conversion (to be modified once library.txt is incorporated)
@@ -95,21 +95,37 @@ fn pvp_mode() {
     game(_pvp_word.to_lowercase());
 
 }
+
+fn ascii_animations(n:u8) {
+    match n {
+        0 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n  /L  |\n      |\n=========\n"),
+        1 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n  /   |\n      |\n=========\n"),
+        2 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n      |\n      |\n=========\n"),
+        3 => print!("  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========\n"),
+        4 => print!("  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========\n"),
+        5 => print!("  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"),
+        6 => print!("  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"),
+        _ => println!("ascii animation not available")
+    }
+}
  
 fn game(word_to_guess:String) {
 
     let mut thing_on_display = vec!['_'; word_to_guess.len()];
 
-    let mut attempts = 5;
-    //let mut player_guessed_chars: Vec<char> = Vec::new();
+    let mut attempts = 6;
+    let mut player_guessed_chars = String::new(); //to be added; contains already guessed chars
 
     while attempts > 0 {
         println!("_______________________________________________________");
+        ascii_animations(attempts);
         println!("You have {} remaining attempts.", attempts);
+        println!("These are your guessed characters: {}", player_guessed_chars);
+        println!(" ");
         println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore placement
         println!(" ");
         println!("Please input your guess:");
-        for _n in 1..19 {
+        for _n in 1..10 {
             println!("");
         }
 
@@ -134,19 +150,20 @@ fn game(word_to_guess:String) {
                 break;
             }
         } else {
+            player_guessed_chars.push(guess);
+            player_guessed_chars.push(' ');
             for _n in 1..20 {
                 println!("");
             }
-            println!("False! Try again");
             attempts -= 1;
+            if (attempts > 0) {println!("False! Try again");}
         }
     }
 
     if attempts == 0 {
-        println!("Game over :( The word was: {}", word_to_guess);
-        for _n in 1..20 {
-            println!("");
-        }
+        ascii_animations(0);
+        println!("Game over :( The word was: [ {} ]", word_to_guess);
+        println!(" ")
     }
 
 }
