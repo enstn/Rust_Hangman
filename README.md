@@ -1,2 +1,2 @@
 # Rust_Hangman
-My first ever rust-project.
+first ever rust-project. idk what I'm doing yet tbh
