@@ -20,9 +20,9 @@ ________________________________________________________________________
 
 ________________________________________________________________________
 
-## version history
+## Version History
 
-### Version 1.1 - 1.3 [^1]
+### 1.1 - 1.3 [^1]
 
 - bare structure, can read in user input, store it in a string & compare with specific single chars
 - a lot of println! & Hello Worlds
@@ -31,7 +31,7 @@ ________________________________________________________________________
 - added pvp
 - restructered into functions for better overview between pvc & pvp
 
-### Version 1.4 
+### 1.4 
 
 - chars already guessed by user is stored and shown
 - a lot of println!(" ") for terminal aesthetics
