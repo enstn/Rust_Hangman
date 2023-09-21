@@ -15,7 +15,7 @@ ________________________________________________________________________
 - libraries (momentan werden noch Vektoren benutzt)
 - levels (verschiedene libraries mit unterschiedlich schweren Wörtern)
 - ~~eigenes random number generator~~ 
-- option for multiple rounds 
+- ~~option for multiple rounds~~ 
 - pay to win option to buy more attempts (stonks)
 
 ________________________________________________________________________
@@ -38,5 +38,6 @@ ________________________________________________________________________
 - hangman ascii arts hell yeahhh
 - linear congruential generator for "random" number generation
 - even more ascii art yay
+- option for multiple rounds
 
 [^1]: can`t remember the exact time line anymore.

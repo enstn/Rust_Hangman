@@ -185,17 +185,17 @@ fn main() {
     }
     
     //user input read in
-    let mut _modi_input = String::new();
-    io::stdin().read_line(&mut _modi_input).expect("Failed to read in user input");
-    _modi_input = _modi_input.trim().to_string();
+    let mut modi_input = String::new();
+    io::stdin().read_line(&mut modi_input).expect("failed to read in user input");
+    modi_input = modi_input.trim().to_string();
 
-    if (_modi_input == "1") {
+    if (modi_input == "1") {
         for _n in 0..49 {
             println!("");
         }
         println!("You have selected: Player Versus Computer. The game starts now!");
         pvc_mode();
-    } else if (_modi_input == "2") {
+    } else if (modi_input == "2") {
         for _n in 0..49 {
             println!("");
         }
@@ -203,6 +203,19 @@ fn main() {
         pvp_mode();
     } else {
         println!("Failed to read in user input");
+    }
+
+    println!("Round ended, do you want to start a new round? [ y / n ]");
+    let mut round_input = String::new();
+    io::stdin().read_line(&mut round_input).expect("failed to read in user input");
+    let char = round_input.trim().chars().next().unwrap();
+
+    match char {
+
+        'y' => main(),
+        'n' => println!(""),
+        _ => println!("unvalid input"),
+
     }
 
     println!("Thank you for playing Hangman! Until next time :)");
