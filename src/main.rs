@@ -6,9 +6,6 @@ use std::thread::sleep;
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-
-
-
 struct App {
     hangman_logo: Vec<String>,
 }
