@@ -82,12 +82,12 @@ fn current_display_state(attempts: &u8, player_guessed_chars: &String, thing_on_
     }
     println!("");
     ascii_arts(*a);
-    println!("Previously guessed characters: {c}");
+    println!("[ {c}]");
     println!(" ");
     println!("{}", t.iter().collect::<String>()); //iterator for underscore conversion
     println!(" ");
-    println!("Please input your guess:");
-    for _n in 0..10 {
+    //println!("Please input your guess:");
+    for _n in 0..11 {
         println!("");
     }
 
@@ -107,19 +107,19 @@ fn heart_display_state(attempts: &u8, player_guessed_chars: &String, thing_on_di
     print!("██");
     println!("");
     ascii_arts(*a);
-    println!("Previously guessed characters: {c}");
+    println!("[ {c}]");
     println!(" ");
     println!("{}", t.iter().collect::<String>()); //iterator for underscore conversion
     println!(" ");
-    println!("Please input your guess:");
-    for _n in 0..10 {
+    //println!("Please input your guess:");
+    for _n in 0..11 {
         println!("");
     }
 
 }
 
 fn clear_display() {
-    for _ in 0..19 {
+    for _ in 0..23 {
         println!(" ");
     }
 }
@@ -199,8 +199,8 @@ fn pvc_mode() {
 fn pvp_mode() {
     
     // aesthethics
-    println!("Player One, please input the word to be guessed: ");
-    for _n in 0..22 {
+    println!("PLAYER ONE, PLEASE INPUT THE WORD TO BE GUESSED ");
+    for _n in 0..19 {
         println!("");
     }
 
@@ -238,7 +238,7 @@ fn game(word_to_guess:String) {
         }
         println!("");
         ascii_arts(attempts);
-        println!("Previously guessed characters: {player_guessed_chars}");
+        println!("[ {player_guessed_chars}]");
         println!(" ");
         println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore conversion
         println!(" ");
@@ -277,7 +277,7 @@ fn game(word_to_guess:String) {
             }
             heart_animation(&attempts, &player_guessed_chars, &thing_on_display);
             attempts -= 1;
-            if attempts > 0 {println!("False! Try again");}
+            //if attempts > 0 {println!("False! Try again");}
         }
     }
     
@@ -297,7 +297,7 @@ fn main() {
     for _ in 0..29 {
         println!(" ");
     }
-    println!("Welcome to version 1.4!");
+    println!("Welcome to version 1.5!");
     for line in app.hangman_logo.iter() {
         println!("{line}");
     }
@@ -317,16 +317,22 @@ fn main() {
     modi_input = modi_input.trim().to_string();
 
     if modi_input == "1" {
-        for _n in 0..49 {
-            println!("");
-        }
+        clear_display();
         println!("You have selected: Player Versus Computer. The game starts now!");
+        clear_display();
+        sleep(Duration::from_millis(1000));
+        println!("remember: please only input lowercase chars");
+        clear_display();
+        sleep(Duration::from_millis(2000));
         pvc_mode();
     } else if modi_input == "2" {
-        for _n in 0..49 {
-            println!("");
-        }
+        clear_display();
         println!("You have selected: Player Versus Player. The game starts now!");
+        clear_display();
+        sleep(Duration::from_millis(1000));
+        println!("remember: please only input lowercase chars");
+        clear_display();
+        sleep(Duration::from_millis(2000));
         pvp_mode();
     } else {
         println!("Failed to read in user input");
@@ -343,7 +349,7 @@ fn main() {
         'n' => {
                 clear_display();
                 print_heart();
-                println!("Thank you for playing Hangman! Until next time :)");
+                println!("Thank you for testing Hangman! Until next time :)");
                 println!(" ");
             },
         _ => println!("unvalid input"),
