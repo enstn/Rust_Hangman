@@ -46,5 +46,6 @@ ________________________________________________________________________
 - even more ascii art yay
 - option for multiple rounds
 - dictionary extension
+- heart system
 
 [^1]: can`t remember the exact time line anymore.
