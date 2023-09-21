@@ -1,10 +1,40 @@
 
-use std::io;
+use std::fs::File;
+use std::io::{BufReader, BufRead, Error};
+use std::{io, vec};
 use std::thread::sleep;
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+
+
+
+struct App {
+    hangman_logo: Vec<String>,
+}
+
+impl App {
+    fn new() -> Self {
+        let path = "res/logo.txt".to_string();
+        let file = File::open(path).expect("failed to open logo file");
+        let reader = BufReader::new(file);
+        let my_closure = |r: Result<String, Error>| {
+            match r {
+                Ok(line) => line,
+                Err(err) =>  {
+                    println!("We got an error: {err}");
+                    "".to_string()
+                },
+            }
+        };
+        let hangman_logo: Vec<String> = reader.lines().map(my_closure).collect();
+        Self { hangman_logo }
+    } 
+
+}
+
 fn ascii_animations(n:u8) {
+
     match n {
 
         // hangman 
@@ -15,13 +45,6 @@ fn ascii_animations(n:u8) {
         4 => print!("  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========\n"),
         5 => print!("  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"),
         6 => print!("  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"),
-
-        // title
-        7 =>  println!(r"██   ██  █████  ███    ██  ██████  ███    ███  █████  ███    ██"), 
-        8 =>  println!(r"██   ██ ██   ██ ████   ██ ██       ████  ████ ██   ██ ████   ██"),
-        9 =>  println!(r"███████ ███████ ██ ██  ██ ██   ███ ██ ████ ██ ███████ ██ ██  ██"),
-        10 => println!(r"██   ██ ██   ██ ██  ██ ██ ██    ██ ██  ██  ██ ██   ██ ██  ██ ██"),
-        11 => println!(r"██   ██ ██   ██ ██   ████  ██████  ██      ██ ██   ██ ██   ████"),
 
         _ => println!("ascii animation not found")
 
@@ -53,19 +76,30 @@ fn lcg(n:u64) -> u64 {
     result
 }
 
-// provides one word "randomly" from library to game()
+// provides one word "randomly" from dictionary to game()
 fn pvc_mode() {
+    
+    // Gets game dictionary into a vector
+    let path = "res/words.txt".to_string();
+    let file = File::open(path).expect("failed to open words file");
+    let reader = BufReader::new(file);
+    let argument = |r: Result<String, Error>| {
+        match r {
+            Ok(line) => line,
+            Err(..) => { "".to_string() },
+        }
+    };
 
-    // Game library (to be somehow replaced by incorporating library.txt)
-    let library = vec!["Jazz", "Why", "Are", "You", "Gay"];
+    // Game dictionary (to be somehow replaced by incorporating dictionary.txt)
+    let dictionary: Vec<String> = reader.lines().map(argument).collect();
     
     // Random number provided by linear congruential generator
-    let size = library.len();
+    let size = dictionary.len();
     let random_number = lcg(size as u64);
-    print!("THE RANDOM NUMBER IS: {} ", random_number);
+    //print!("THE RANDOM NUMBER IS: {} ", random_number); // for debug purposes
 
-    // Number-to-guess conversion (to be modified once library.txt is incorporated)
-    let word_to_guess = library[random_number as usize].to_lowercase(); 
+    // Number-to-guess conversion (to be modified once dictionary.txt is incorporated)
+    let word_to_guess = dictionary[random_number as usize].to_lowercase(); 
 
     // game function
     game(word_to_guess);
@@ -137,11 +171,11 @@ fn game(word_to_guess:String) {
                     thing_on_display[i] = c;
                 }
             }
-            if (!thing_on_display.contains(&'_')) { // checks whether word has been found or not
+            if !thing_on_display.contains(&'_') { // checks whether word has been found or not
                 for _n in 0..19 {
                     println!("");
                 }
-                println!("Correct, the word was [ {} ]!", word_to_guess);
+                println!("Correct, the word was [ {word_to_guess} ]!");
                 break;
             }
         } else {
@@ -151,13 +185,13 @@ fn game(word_to_guess:String) {
                 println!("");
             }
             attempts -= 1;
-            if (attempts > 0) {println!("False! Try again");}
+            if attempts > 0 {println!("False! Try again");}
         }
     }
     
     if attempts == 0 {
         ascii_animations(0);
-        println!("Game over :( The word was: [ {} ]", word_to_guess);
+        println!("Game over :( The word was: [ {word_to_guess} ]");
         println!(" ")
     }
 
@@ -166,13 +200,14 @@ fn game(word_to_guess:String) {
 
 fn main() {
     
-    for _n in 0..29 {
+    let app = App::new();
+
+    for _ in 0..29 {
         println!(" ");
     }
-    println!("Welcome to version 1.4!"); 
-    for n in 7..12 {
-        ascii_animations(n);
-        //sleep(Duration::from_millis(100));
+    println!("Welcome to version 1.4!");
+    for line in app.hangman_logo.iter() {
+        println!("{line}");
     }
     println!(" ");
     println!("Please select a modi: ");
@@ -189,13 +224,13 @@ fn main() {
     io::stdin().read_line(&mut modi_input).expect("failed to read in user input");
     modi_input = modi_input.trim().to_string();
 
-    if (modi_input == "1") {
+    if modi_input == "1" {
         for _n in 0..49 {
             println!("");
         }
         println!("You have selected: Player Versus Computer. The game starts now!");
         pvc_mode();
-    } else if (modi_input == "2") {
+    } else if modi_input == "2" {
         for _n in 0..49 {
             println!("");
         }
