@@ -8,18 +8,17 @@ ________________________________________________________________________
 - [ ] sometimes has error when already guessed char is put in
 - [ ] can not handle uppercase inputs
 - [x] ~~user cannot see previous attempts~~
-- [ ] unwraps that could be defined better with result & match?
+- [ ] dealing with unwraps 
 
 
 **idea dump for things i want to / might add**
 
-- ~~dictionaries (momentan werden noch Vektoren benutzt)~~
 - levels (verschiedene dictionaries mit unterschiedlich schweren Wörtern)
-- ~~eigenes random number generator~~ 
-- ~~option for multiple rounds~~ 
 - pay to win option to buy more attempts (stonks)
 - buttons to click on
 - tips
+- multiple languages
+
 
 ________________________________________________________________________
 
@@ -47,5 +46,10 @@ ________________________________________________________________________
 - option for multiple rounds
 - dictionary extension
 - heart system
+
+### 1.6
+
+- code restructure
+- animations
 
 [^1]: can`t remember the exact time line anymore.

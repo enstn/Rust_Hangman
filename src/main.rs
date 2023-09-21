@@ -1,4 +1,5 @@
 
+//use std::collections::btree_map::IterMut;
 use std::fs::File;
 use std::io::{BufReader, BufRead, Error};
 use std::{io, vec};
@@ -6,138 +7,9 @@ use std::thread::sleep;
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-struct App {
-    hangman_logo: Vec<String>,
-}
+mod animations;
 
-impl App {
-    fn new() -> Self {
-        let path = "res/logo.txt".to_string();
-        let file = File::open(path).expect("failed to open logo file");
-        let reader = BufReader::new(file);
-        let my_closure = |r: Result<String, Error>| {
-            match r {
-                Ok(line) => line,
-                Err(err) =>  {
-                    println!("We got an error: {err}");
-                    "".to_string()
-                },
-            }
-        };
-        let hangman_logo: Vec<String> = reader.lines().map(my_closure).collect();
-        Self { hangman_logo }
-    } 
-
-}
-
-fn print_heart() {
-
-    let path = "res/heart.txt".to_string();
-    let file = File::open(path).expect("failed to open words file");
-    let reader = BufReader::new(file);
-    let argument = |r: Result<String, Error>| {
-        match r {
-            Ok(line) => line,
-            Err(..) => { "".to_string() },
-        }
-    };
-    let heart_logo: Vec<String> = reader.lines().map(argument).collect();
-    for line in heart_logo.iter() {
-        println!("{line}");
-    }
-    println!(" ");
-}
-
-fn ascii_arts(n: u8) {
-
-    match n {
-
-        // hangman 
-        0 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n  /L  |\n      |\n=========\n"),
-        1 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n  /   |\n      |\n=========\n"),
-        2 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n      |\n      |\n=========\n"),
-        3 => print!("  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========\n"),
-        4 => print!("  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========\n"),
-        5 => print!("  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"),
-        6 => print!("  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"),
-
-        _ => println!("ascii animation not found"),
-    }
-}
-
-
-fn current_display_state(attempts: &u8, player_guessed_chars: &String, thing_on_display: &Vec<char> ) {
-
-    let a = attempts;
-    let c = player_guessed_chars;
-    let t = thing_on_display;
-
-    println!("_______________________________________________________");
-    print!("{a} remaining a | ");
-    for _ in 0..*a {
-        print!("<3 ");
-    }
-    println!("");
-    ascii_arts(*a);
-    println!("[ {c}]");
-    println!(" ");
-    println!("{}", t.iter().collect::<String>()); //iterator for underscore conversion
-    println!(" ");
-    //println!("Please input your guess:");
-    for _n in 0..11 {
-        println!("");
-    }
-
-}
-
-fn heart_display_state(attempts: &u8, player_guessed_chars: &String, thing_on_display: &Vec<char> ) {
-
-    let a = attempts;
-    let c = player_guessed_chars;
-    let t = thing_on_display;
-
-    println!("_______________________________________________________");
-    print!("{a} remaining a | ");
-    for _ in 0..*a - 1 {
-        print!("<3 ");
-    }
-    print!("██");
-    println!("");
-    ascii_arts(*a);
-    println!("[ {c}]");
-    println!(" ");
-    println!("{}", t.iter().collect::<String>()); //iterator for underscore conversion
-    println!(" ");
-    //println!("Please input your guess:");
-    for _n in 0..11 {
-        println!("");
-    }
-
-}
-
-fn clear_display() {
-    for _ in 0..23 {
-        println!(" ");
-    }
-}
-
-fn heart_animation(a: &u8, c: &String, t: &Vec<char>) {
-    
-    heart_display_state(&a,&c,&t);   
-    sleep(Duration::from_millis(500));
-    clear_display();
-    current_display_state(&a,&c,&t);
-    sleep(Duration::from_millis(500));
-    clear_display();
-
-    heart_display_state(&a,&c,&t);   
-    sleep(Duration::from_millis(500));
-    clear_display();
-    current_display_state(&a,&c,&t);
-    clear_display();
-
-}
-
+// linear congruential generator for "random" number used in pvc mode
 fn lcg(n:u64) -> u64 {       
 
     // lcg parameters (from Wikipedia sourced by Numerical Recipes, seems to work fine)
@@ -162,9 +34,20 @@ fn lcg(n:u64) -> u64 {
     result
 }
 
-// provides one word "randomly" from dictionary to game()
+// player versus computer -> provides one word "randomly" from dictionary to game()
 fn pvc_mode() {
     
+    // preperations
+    animations::clear_display();
+    println!("You have selected: Player Versus Computer. The game starts now!");
+    animations::clear_display();
+    sleep(Duration::from_millis(1000));
+    println!("You have selected: Player Versus Computer. The game starts now!");
+    println!("remember: please only input lowercase chars");
+    animations::clear_for(22);
+    sleep(Duration::from_millis(2000));
+    animations::clear_display();
+
     // Gets game dictionary into a vector
     let path = "res/words.txt".to_string();
     let file = File::open(path).expect("failed to open words file");
@@ -192,14 +75,23 @@ fn pvc_mode() {
     
 }
 
-// provides one word by user input to game()
+// player versus player - provides one word by user input to game()
 fn pvp_mode() {
+
+    // preperations
+    animations::clear_display();
+    println!("You have selected: Player Versus Player. The game starts now!");
+    animations::clear_display();
+    sleep(Duration::from_millis(1000));
+    println!("You have selected: Player Versus Player. The game starts now!");
+    println!("remember: please only input lowercase chars");
+    animations::clear_for(22);
+    sleep(Duration::from_millis(2000));
+    animations::clear_display();
     
     // aesthethics
     println!("PLAYER ONE, PLEASE INPUT THE WORD TO BE GUESSED ");
-    for _n in 0..19 {
-        println!("");
-    }
+    animations::clear_for(19);
 
     // user input
     let mut _pvp_word = String::new();
@@ -207,42 +99,36 @@ fn pvp_mode() {
     _pvp_word.pop();
     
     // aesthethics
-    for _n in 0..29 {
-        println!("");
-    }
+    animations::clear_for(29);
     println!("Player 2 shall start now!");
-    for _n in 0..19 {
-        println!("");
-    }
+    animations::clear_for(19);
     
     // game function
     game(_pvp_word.to_lowercase());
     
 }
 
+// has hangman rules implemented and checks / updates the scores
 fn game(word_to_guess:String) {
     
     let mut thing_on_display = vec!['_'; word_to_guess.len()]; 
-    let mut attempts = 6;
+    let mut attempts = 9;
     let mut player_guessed_chars = String::new(); 
     
     while attempts > 0 {
 
-        println!("_______________________________________________________");
-        print!("{attempts} remaining a | ");
+        animations::clear_for(4);
+        println!("{attempts} remaining attempts");
+        print!(" ");
         for _ in 0..attempts {
-            print!("<3 ");
+            print!("♥︎ ");
         }
-        println!("");
-        ascii_arts(attempts);
-        println!("[ {player_guessed_chars}]");
         println!(" ");
-        println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore conversion
+        animations::ascii_arts(attempts);
         println!(" ");
+        println!("  {} [ {player_guessed_chars}]", thing_on_display.iter().collect::<String>()); //iterator for underscore conversion
+        animations::clear_for(6);
         println!("Please input your guess:");
-        for _n in 0..10 {
-            println!("");
-        }
 
         // reads in user guess
         let mut guess_input = String::new();
@@ -251,36 +137,37 @@ fn game(word_to_guess:String) {
 
         // checks player input according to hangman rules
         if word_to_guess.contains(guess) {
-            for _n in 0..19 {
-                println!("");
-            }
+            animations::clear_for(19);
             for (i, c) in word_to_guess.chars().enumerate() { // replaces the underscores with guessed char
                 if c == guess {
                     thing_on_display[i] = c;
                 }
             }
             if !thing_on_display.contains(&'_') { // checks whether word has been found or not
-                for _n in 0..19 {
-                    println!("");
-                }
+                animations::clear_for(19);
                 println!("Correct, the word was [ {word_to_guess} ]!");
                 break;
             }
         } else {
             player_guessed_chars.push(guess);
             player_guessed_chars.push(' ');
-            for _n in 0..19 {
-                println!("");
+            animations::clear_for(19);
+            animations::heart_animation(&attempts, &player_guessed_chars, &thing_on_display);
+            if attempts == 9 {
+                animations::branch_animation(1, &attempts, &player_guessed_chars, &thing_on_display);
             }
-            heart_animation(&attempts, &player_guessed_chars, &thing_on_display);
+            if attempts == 8 {
+                animations::branch_animation(2, &attempts, &player_guessed_chars, &thing_on_display);
+            }
+            
             attempts -= 1;
             //if attempts > 0 {println!("False! Try again");}
         }
     }
     
     if attempts == 0 {
-        ascii_arts(0);
-        println!("Game over :( The word was: [ {word_to_guess} ]");
+        animations::print_over();
+        println!("The word was: [ {word_to_guess} ]");
         println!(" ")
     }
 
@@ -288,16 +175,10 @@ fn game(word_to_guess:String) {
 
 
 fn main() {
-    
-    let app = App::new();
 
-    for _ in 0..29 {
-        println!(" ");
-    }
+    animations::clear_display();
     println!("Welcome to version 1.5!");
-    for line in app.hangman_logo.iter() {
-        println!("{line}");
-    }
+    animations::print_logo();
     println!(" ");
     println!("Please select a modi: ");
     println!(" ");
@@ -314,22 +195,8 @@ fn main() {
     modi_input = modi_input.trim().to_string();
 
     if modi_input == "1" {
-        clear_display();
-        println!("You have selected: Player Versus Computer. The game starts now!");
-        clear_display();
-        sleep(Duration::from_millis(1000));
-        println!("remember: please only input lowercase chars");
-        clear_display();
-        sleep(Duration::from_millis(2000));
         pvc_mode();
     } else if modi_input == "2" {
-        clear_display();
-        println!("You have selected: Player Versus Player. The game starts now!");
-        clear_display();
-        sleep(Duration::from_millis(1000));
-        println!("remember: please only input lowercase chars");
-        clear_display();
-        sleep(Duration::from_millis(2000));
         pvp_mode();
     } else {
         println!("Failed to read in user input");
@@ -344,8 +211,8 @@ fn main() {
 
         'y' => main(),
         'n' => {
-                clear_display();
-                print_heart();
+                animations::clear_display();
+                animations::print_heart();
                 println!("Thank you for testing Hangman! Until next time :)");
                 println!(" ");
             },
@@ -354,3 +221,39 @@ fn main() {
     }
     
 }
+
+
+
+
+
+ /* 
+    let app = App::new();
+
+    for _ in 0..29 {
+        println!(" ");
+    }
+
+    pub struct App {
+        hangman_logo: Vec<String>,
+    }
+    
+    impl App {
+        pub fn new() -> Self {
+            let path = "res/logo.txt".to_string();
+            let file = File::open(path).expect("failed to open logo file");
+            let reader = BufReader::new(file);
+            let my_closure = |r: Result<String, Error>| {
+                match r {
+                    Ok(line) => line,
+                    Err(err) =>  {
+                        println!("We got an error: {err}");
+                        "".to_string()
+                    },
+                }
+            };
+            let hangman_logo: Vec<String> = reader.lines().map(my_closure).collect();
+            Self { hangman_logo }
+        } 
+    
+    }
+*/
