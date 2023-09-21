@@ -7,7 +7,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 fn ascii_animations(n:u8) {
     match n {
 
-        // hangman
+        // hangman 
         0 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n  /L  |\n      |\n=========\n"),
         1 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n  /   |\n      |\n=========\n"),
         2 => print!("  +---+\n  |   |\n  O   |\n /|L  |\n      |\n      |\n=========\n"),
@@ -28,7 +28,7 @@ fn ascii_animations(n:u8) {
     }
 }
 
-fn lcg(n:u128) -> u128 {
+fn lcg(n:u128) -> u128 {       
 
     // lcg parameters (from Wikipedia sourced by Numerical Recipes, seems to work fine)
     let m:u128 = u128::pow(2, 32); // modulus
@@ -53,11 +53,13 @@ fn lcg(n:u128) -> u128 {
     result
 }
 
+// provides one word "randomly" from library to game()
 fn pvc_mode() {
+
     // Game library (to be somehow replaced by incorporating library.txt)
     let library = vec!["Jazz", "Why", "Are", "You", "Gay"];
     
-    // Random number generator 
+    // Random number provided by linear congruential generator
     let size:u128 = library.len().try_into().unwrap();
     let random_number = lcg(size) as usize;
     print!("THE RANDOM NUMBER IS: {} ", random_number);
@@ -65,20 +67,26 @@ fn pvc_mode() {
     // Number-to-guess conversion (to be modified once library.txt is incorporated)
     let word_to_guess = library[random_number].to_lowercase(); 
 
+    // game function
     game(word_to_guess);
     
 }
 
+// provides one word by user input to game()
 fn pvp_mode() {
     
+    // aesthethics
     println!("Player One, please input the word to be guessed: ");
     for _n in 0..22 {
         println!("");
     }
+
+    // user input
     let mut _pvp_word = String::new();
     io::stdin().read_line(&mut _pvp_word).expect("Failed to read in your word");
     _pvp_word.pop();
     
+    // aesthethics
     for _n in 0..29 {
         println!("");
     }
@@ -87,44 +95,49 @@ fn pvp_mode() {
         println!("");
     }
     
+    // game function
     game(_pvp_word.to_lowercase());
     
 }
 
 fn game(word_to_guess:String) {
     
-    let mut thing_on_display = vec!['_'; word_to_guess.len()];
-    
+    let mut thing_on_display = vec!['_'; word_to_guess.len()]; 
     let mut attempts = 6;
-    let mut player_guessed_chars = String::new(); //to be added; contains already guessed chars
+    let mut player_guessed_chars = String::new(); 
     
     while attempts > 0 {
+
         println!("_______________________________________________________");
         ascii_animations(attempts);
-        println!("You have {} remaining attempts.", attempts);
-        println!("These are your guessed characters: {}", player_guessed_chars);
+        print!("You have {} remaining attempts.", attempts);
+        println!(" Previously guessed characters: {}", player_guessed_chars);
         println!(" ");
-        println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore placement
+
+        println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore conversion
+
         println!(" ");
         println!("Please input your guess:");
-        for _n in 0..9 {
+        for _n in 0..10 {
             println!("");
         }
         
+        // reads in user guess
         let mut guess_input = String::new();
         io::stdin().read_line(&mut guess_input).expect("Failed to read in guess input");
-        let guess = guess_input.trim().chars().next().unwrap(); //thank you Stackoverflow; checks for single char input
-        
+        let guess = guess_input.trim().chars().next().unwrap(); // checks and trims for single char input
+
+        // checks player input according to hangman rules
         if word_to_guess.contains(guess) {
             for _n in 0..19 {
                 println!("");
             }
-            for (i, c) in word_to_guess.chars().enumerate() { //Stackoverflow at it again
+            for (i, c) in word_to_guess.chars().enumerate() { // replaces the underscores with guessed char
                 if c == guess {
                     thing_on_display[i] = c;
                 }
             }
-            if (!thing_on_display.contains(&'_')) { 
+            if (!thing_on_display.contains(&'_')) { // checks whether word has been found or not
                 for _n in 0..19 {
                     println!("");
                 }
@@ -196,7 +209,5 @@ fn main() {
     for _n in 0..13 {
         println!("");
     }
-   
-
     
 }
