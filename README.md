@@ -14,7 +14,7 @@ ________________________________________________________________________
 
 - libraries (momentan werden noch Vektoren benutzt)
 - levels (verschiedene libraries mit unterschiedlich schweren Wörtern)
-- eigenes random number generator 
+- ~~eigenes random number generator~~ 
 - option for multiple rounds 
 - pay to win option to buy more attempts (stonks)
 
@@ -36,5 +36,7 @@ ________________________________________________________________________
 - chars already guessed by user is stored and shown
 - a lot of println!(" ") for terminal aesthetics
 - hangman ascii arts hell yeahhh
+- linear congruential generator for "random" number generation
+- even more ascii art yay
 
 [^1]: can`t remember the exact time line anymore.
