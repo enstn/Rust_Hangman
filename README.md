@@ -8,15 +8,18 @@ ________________________________________________________________________
 - [ ] sometimes has error when already guessed char is put in
 - [ ] can not handle uppercase inputs
 - [x] ~~user cannot see previous attempts~~
+- [ ] unwraps that could be defined better with result & match?
 
 
-**idea dump for things i might add**
+**idea dump for things i want to / might add**
 
-- libraries (momentan werden noch Vektoren benutzt)
-- levels (verschiedene libraries mit unterschiedlich schweren Wörtern)
+- ~~dictionaries (momentan werden noch Vektoren benutzt)~~
+- levels (verschiedene dictionaries mit unterschiedlich schweren Wörtern)
 - ~~eigenes random number generator~~ 
 - ~~option for multiple rounds~~ 
 - pay to win option to buy more attempts (stonks)
+- buttons to click on
+- tips
 
 ________________________________________________________________________
 
@@ -36,8 +39,12 @@ ________________________________________________________________________
 - chars already guessed by user is stored and shown
 - a lot of println!(" ") for terminal aesthetics
 - hangman ascii arts hell yeahhh
-- linear congruential generator for "random" number generation
+- [linear congruential generator](https://en.wikipedia.org/wiki/Linear_congruential_generator) for "random" number generation
+
+### 1.5 
+
 - even more ascii art yay
 - option for multiple rounds
+- dictionary extension
 
 [^1]: can`t remember the exact time line anymore.
