@@ -33,7 +33,25 @@ impl App {
 
 }
 
-fn ascii_animations(n:u8) {
+fn print_heart() {
+
+    let path = "res/heart.txt".to_string();
+    let file = File::open(path).expect("failed to open words file");
+    let reader = BufReader::new(file);
+    let argument = |r: Result<String, Error>| {
+        match r {
+            Ok(line) => line,
+            Err(..) => { "".to_string() },
+        }
+    };
+    let heart_logo: Vec<String> = reader.lines().map(argument).collect();
+    for line in heart_logo.iter() {
+        println!("{line}");
+    }
+    println!(" ");
+}
+
+fn ascii_arts(n: u8) {
 
     match n {
 
@@ -46,9 +64,81 @@ fn ascii_animations(n:u8) {
         5 => print!("  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========\n"),
         6 => print!("  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========\n"),
 
-        _ => println!("ascii animation not found")
-
+        _ => println!("ascii animation not found"),
     }
+}
+
+
+fn current_display_state(attempts: &u8, player_guessed_chars: &String, thing_on_display: &Vec<char> ) {
+
+    let a = attempts;
+    let c = player_guessed_chars;
+    let t = thing_on_display;
+
+    println!("_______________________________________________________");
+    print!("{a} remaining a | ");
+    for _ in 0..*a {
+        print!("<3 ");
+    }
+    println!("");
+    ascii_arts(*a);
+    println!("Previously guessed characters: {c}");
+    println!(" ");
+    println!("{}", t.iter().collect::<String>()); //iterator for underscore conversion
+    println!(" ");
+    println!("Please input your guess:");
+    for _n in 0..10 {
+        println!("");
+    }
+
+}
+
+fn heart_display_state(attempts: &u8, player_guessed_chars: &String, thing_on_display: &Vec<char> ) {
+
+    let a = attempts;
+    let c = player_guessed_chars;
+    let t = thing_on_display;
+
+    println!("_______________________________________________________");
+    print!("{a} remaining a | ");
+    for _ in 0..*a - 1 {
+        print!("<3 ");
+    }
+    print!("██");
+    println!("");
+    ascii_arts(*a);
+    println!("Previously guessed characters: {c}");
+    println!(" ");
+    println!("{}", t.iter().collect::<String>()); //iterator for underscore conversion
+    println!(" ");
+    println!("Please input your guess:");
+    for _n in 0..10 {
+        println!("");
+    }
+
+}
+
+fn clear_display() {
+    for _ in 0..19 {
+        println!(" ");
+    }
+}
+
+fn heart_animation(a: &u8, c: &String, t: &Vec<char>) {
+    
+    heart_display_state(&a,&c,&t);   
+    sleep(Duration::from_millis(500));
+    clear_display();
+    current_display_state(&a,&c,&t);
+    sleep(Duration::from_millis(500));
+    clear_display();
+
+    heart_display_state(&a,&c,&t);   
+    sleep(Duration::from_millis(500));
+    clear_display();
+    current_display_state(&a,&c,&t);
+    clear_display();
+
 }
 
 fn lcg(n:u64) -> u64 {       
@@ -71,7 +161,6 @@ fn lcg(n:u64) -> u64 {
 
     }
     let result = current % n;
-
 
     result
 }
@@ -143,19 +232,21 @@ fn game(word_to_guess:String) {
     while attempts > 0 {
 
         println!("_______________________________________________________");
-        ascii_animations(attempts);
-        print!("You have {} remaining attempts.", attempts);
-        println!(" Previously guessed characters: {}", player_guessed_chars);
+        print!("{attempts} remaining a | ");
+        for _ in 0..attempts {
+            print!("<3 ");
+        }
+        println!("");
+        ascii_arts(attempts);
+        println!("Previously guessed characters: {player_guessed_chars}");
         println!(" ");
-
         println!("{}", thing_on_display.iter().collect::<String>()); //iterator for underscore conversion
-
         println!(" ");
         println!("Please input your guess:");
         for _n in 0..10 {
             println!("");
         }
-        
+
         // reads in user guess
         let mut guess_input = String::new();
         io::stdin().read_line(&mut guess_input).expect("Failed to read in guess input");
@@ -184,13 +275,14 @@ fn game(word_to_guess:String) {
             for _n in 0..19 {
                 println!("");
             }
+            heart_animation(&attempts, &player_guessed_chars, &thing_on_display);
             attempts -= 1;
             if attempts > 0 {println!("False! Try again");}
         }
     }
     
     if attempts == 0 {
-        ascii_animations(0);
+        ascii_arts(0);
         println!("Game over :( The word was: [ {word_to_guess} ]");
         println!(" ")
     }
@@ -248,14 +340,14 @@ fn main() {
     match char {
 
         'y' => main(),
-        'n' => println!(""),
+        'n' => {
+                clear_display();
+                print_heart();
+                println!("Thank you for playing Hangman! Until next time :)");
+                println!(" ");
+            },
         _ => println!("unvalid input"),
 
-    }
-
-    println!("Thank you for playing Hangman! Until next time :)");
-    for _n in 0..13 {
-        println!("");
     }
     
 }
