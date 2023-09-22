@@ -7,17 +7,14 @@ ________________________________________________________________________
 
 - [ ] sometimes has error when already guessed char is put in
 - [ ] can not handle uppercase inputs
-- [x] ~~user cannot see previous attempts~~
 - [ ] dealing with unwraps 
 
 
 **idea dump for things i want to / might add**
 
 - levels (verschiedene dictionaries mit unterschiedlich schweren Wörtern)
-- pay to win option to buy more attempts (stonks)
 - buttons to click on
-- tips
-- multiple languages
+- tips in pvc mode
 
 
 ________________________________________________________________________
