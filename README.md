@@ -50,6 +50,7 @@ ________________________________________________________________________
 ### 1.6
 
 - code restructure
-- animations
+- game over & drawing hangman animation
+- option to switch language bases for pvc mode
 
 [^1]: can`t remember the exact time line anymore.

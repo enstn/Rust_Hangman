@@ -34,22 +34,55 @@ fn lcg(n:u64) -> u64 {
     result
 }
 
-// player versus computer -> provides one word "randomly" from dictionary to game()
-fn pvc_mode() {
-    
+fn select_language() -> String {
+
     // preperations
     animations::clear_display();
-    println!("You have selected: Player Versus Computer. The game starts now!");
+    println!("You have selected: Player Versus Computer.");
     animations::clear_display();
     sleep(Duration::from_millis(1000));
-    println!("You have selected: Player Versus Computer. The game starts now!");
+    println!("You have selected: Player Versus Computer.");
     println!("remember: please only input lowercase chars");
     animations::clear_for(22);
-    sleep(Duration::from_millis(2000));
-    animations::clear_display();
+    sleep(Duration::from_millis(1000));
+
+    println!("Please choose what language your word should be from");
+    println!(" ");
+    println!("1 = English");
+    println!("2 = German");
+    animations::clear_for(10);
+
+    //user input read in
+    let mut language_input = String::new();
+    io::stdin().read_line(&mut language_input).expect("failed to read in user input");
+    language_input = language_input.trim().to_string();
+
+
+    if language_input == "1" {
+        let result = "res/english.txt".to_string();
+        println!("You have selected: ENGLISH");
+        animations::clear_for(23);
+        sleep(Duration::from_millis(1400));
+        result
+    } else if language_input == "2" {
+        let result = "res/german.txt".to_string();
+        println!("You have selected: GERMAN");
+        animations::clear_for(23);
+        sleep(Duration::from_millis(1400));
+        result
+    } else {
+        let result = "word read in failed".to_string();
+        result
+    }
+    
+    
+}
+
+// player versus computer -> provides one word "randomly" from dictionary to game()
+fn pvc_mode(sl: String) {
 
     // Gets game dictionary into a vector
-    let path = "res/words.txt".to_string();
+    let path = sl;
     let file = File::open(path).expect("failed to open words file");
     let reader = BufReader::new(file);
     let argument = |r: Result<String, Error>| {
@@ -195,7 +228,7 @@ fn main() {
     modi_input = modi_input.trim().to_string();
 
     if modi_input == "1" {
-        pvc_mode();
+        pvc_mode(select_language());
     } else if modi_input == "2" {
         pvp_mode();
     } else {
@@ -237,7 +270,7 @@ fn main() {
         hangman_logo: Vec<String>,
     }
     
-    impl App {
+    impl App { 
         pub fn new() -> Self {
             let path = "res/logo.txt".to_string();
             let file = File::open(path).expect("failed to open logo file");
