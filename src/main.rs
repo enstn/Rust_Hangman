@@ -53,28 +53,29 @@ fn select_language() -> String {
     animations::clear_for(10);
 
     //user input read in
-    let mut language_input = String::new();
-    io::stdin().read_line(&mut language_input).expect("failed to read in user input");
-    language_input = language_input.trim().to_string();
+    loop {
+        let mut language_input = String::new();
+        io::stdin().read_line(&mut language_input).expect("failed to read in user input");
+        
+        language_input = language_input.trim().to_string();
 
 
-    if language_input == "1" {
-        let result = "res/english.txt".to_string();
-        println!("You have selected: ENGLISH");
-        animations::clear_for(23);
-        sleep(Duration::from_millis(1400));
-        result
-    } else if language_input == "2" {
-        let result = "res/german.txt".to_string();
-        println!("You have selected: GERMAN");
-        animations::clear_for(23);
-        sleep(Duration::from_millis(1400));
-        result
-    } else {
-        let result = "word read in failed".to_string();
-        result
+        if language_input == "1" {
+            let result = "res/english.txt".to_string();
+            println!("You have selected: ENGLISH");
+            animations::clear_for(23);
+            sleep(Duration::from_millis(1400));
+            return result;
+        } else if language_input == "2" {
+            let result = "res/german.txt".to_string();
+            println!("You have selected: GERMAN");
+            animations::clear_for(23);
+            sleep(Duration::from_millis(1400));
+            return result;
+        } else {
+            println!("Failed to read in user input");
+        }
     }
-    
     
 }
 
@@ -130,14 +131,18 @@ fn pvp_mode() {
     let mut _pvp_word = String::new();
     io::stdin().read_line(&mut _pvp_word).expect("Failed to read in your word");
     _pvp_word.pop();
-    
+
+    // check whether word has only chars or not
+    let mut _pvp_word_checked = _pvp_word.clone();
+    _pvp_word_checked.retain(|c| c.is_alphabetic());
+
     // aesthethics
     animations::clear_for(29);
     println!("Player 2 shall start now!");
     animations::clear_for(19);
     
     // game function
-    game(_pvp_word.to_lowercase());
+    game(_pvp_word_checked.to_lowercase());
     
 }
 
@@ -167,6 +172,22 @@ fn game(word_to_guess:String) {
         let mut guess_input = String::new();
         io::stdin().read_line(&mut guess_input).expect("Failed to read in guess input");
         let guess = guess_input.trim().chars().next().unwrap(); // checks and trims for single char input
+        
+        /*
+        let mut guess_input = String::new();
+        let mut guess;
+        loop {
+            io::stdin().read_line(&mut guess_input).expect("Failed to read in guess input");
+
+            guess_input.retain(|c| c.is_alphabetic());
+            guess = guess_input.trim().chars().next().unwrap(); // checks and trims for single char input
+            if guess.is_alphabetic() {
+                break;
+            } else {
+                println!("Please input a valid char");
+            }
+        }
+        */
 
         // checks player input according to hangman rules
         if word_to_guess.contains(guess) {
@@ -256,8 +277,6 @@ fn main() {
     }
     
 }
-
-
 
 
 
