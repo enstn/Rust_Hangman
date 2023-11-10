@@ -209,8 +209,10 @@ fn game(word_to_guess:String) {
 
 fn main() {
 
+    let version: f32 = 1.5; 
+
     animations::clear_display();
-    println!("Welcome to version 1.5!");
+    println!("Welcome to version {version}!");
     animations::print_logo();
     println!(" ");
     println!("Please select a modi: ");
@@ -246,7 +248,7 @@ fn main() {
         'n' => {
                 animations::clear_display();
                 animations::print_heart();
-                println!("Thank you for testing Hangman! Until next time :)");
+                println!("Thank you for testing Hangman Version {version}! Until next time :)");
                 println!(" ");
             },
         _ => println!("unvalid input"),
